@@ -1,0 +1,7 @@
+Testing open function.
+Testing append text.
+Hello world.
+This is a really big line to test the capacity of reading big lines. Different from the next one.
+A
+This line ie not finished wit a point
+123445
