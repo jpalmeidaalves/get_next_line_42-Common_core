@@ -18,7 +18,7 @@ char	*ft_update_acum(char *acum)
 		free(acum);
 		return (NULL);
 	}
-	new_acum = (char *)malloc(len_acum - i + 1);
+	new_acum = (char *)malloc(ft_strlen(acum) - i + 1);
 	if (!new_acum)
 		return (NULL);
 	i++;	//increment index to go through de '\n'
@@ -42,7 +42,7 @@ char	*ft_copy_line(char *acum)
 	line = (char *)malloc(i + 2); //allocates memory to acum + '\n' + '\0'
 	if (!line)
 		return (NULL);
-	i = 0
+	i = 0;
 	while (acum[i] && acum[i] != '\n') //copies acum to line up till the '\n'
 	{
 		line[i] = acum[i];
@@ -65,7 +65,7 @@ char	*ft_strjoin(char *acum, char *buf)	//concatenate the acumulated str with th
 		acum = malloc(sizeof(char));	//then allocates memory to a char
 		*acum = '\0';			// and initializes acum with a NULL termminator
 	}
-	if (!acum || !buff)
+	if (!acum || !buf)
 		return (NULL);
 	result = malloc(ft_strlen(acum) + ft_strlen(buf) + 1);
 	if (!result)
@@ -78,7 +78,7 @@ char	*ft_strjoin(char *acum, char *buf)	//concatenate the acumulated str with th
 	while (buf[j] != '\0')  //copies buf to result, after acum
 		result[i++] = buf[j++];
 	result[i] = '\0';
-	free(acum)
+	free(acum);
 	return (result);
 }
 
@@ -87,20 +87,20 @@ char	*ft_read_n_acum(int fd, char *acumulator)
 	char	*buf;	//Store string readed by read function
 	int	readed;	//Store the value returned by the read function (number of readed bytes)
 
-	buf = malloc(buf_size + 1);	//Initializes buf with malloc
+	buf = malloc(BUFFER_SIZE + 1);	//Initializes buf with malloc
 	if (!buf)
 		return (NULL);
-	readed = 1	//Initializes readed with 1 to avoid conflict in the next while
-	while (!ft_strchr(acumulator, '\n';) && readed != 0) //check if theres a '\n' in acumulator
+	readed = 1;	//Initializes readed with 1 to avoid conflict in the next while
+	while (!ft_strchr(acumulator, '\n') && readed != 0) //check if theres a '\n' in acumulator
 							     //and if it's the end of the file. 
 	{
-		readed = read(fd, buf, buf_size)
+		readed = read(fd, buf, BUFFER_SIZE);
 		if (readed == -1)	//error check
 		{
-			free(buff);
+			free(buf);
 			return (NULL);
 		}
-		buff[readed] = '\0';	//finish buf with null terminator(what allows it to used 
+		buf[readed] = '\0';	//finish buf with null terminator(what allows it to used 
 					//in otherfunctions)
 		acumulator = ft_strjoin(acumulator, buf);	//call function to concatenate the
 								//acumulator with the new buffer
@@ -111,11 +111,10 @@ char	*ft_read_n_acum(int fd, char *acumulator)
 
 char	*get_next_line(int fd)
 {
-	int			buf_size = 100;
-	char		result_l;	//line to be returned
+	char		*result_l;	//line to be returned
 	static char	*acumulator; 	//static variable to acumulate readed buffers
 	
-	if (fd < 0 || buf_size <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	acumulator = ft_read_n_acum(fd, acumulator);	//function to read the file and store in 
 							//acumalator the successives reads
@@ -128,13 +127,18 @@ char	*get_next_line(int fd)
 	return(result_l);
 }
 
+#include <stdio.h>
 int	main(void)
 {
 	int	file_d;
 
 	file_d = open("my_file.txt", O_RDONLY);
-	printf("%s\n", get_next_line(file_d));
-	printf("%s\n", get_next_line(file_d));
-//	printf("%s\n", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+	printf("%s", get_next_line(file_d));
+
 	return (0);
 }

@@ -4,3 +4,7 @@ Hello world.
 This is a really big line to test the capacity of reading big lines. Different from the next one.
 This line ie not finished wit a point
 123445
+Big files are hard to read?
+i dont know but just testing
+hahahahaha. hhohohohohohoh\nhajajajaor
+lalalalsjfjfjf
