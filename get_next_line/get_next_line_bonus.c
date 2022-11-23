@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
 
 char	*ft_update_acum(char *acum)
 {
