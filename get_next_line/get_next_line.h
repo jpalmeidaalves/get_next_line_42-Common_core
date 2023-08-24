@@ -28,5 +28,8 @@ char	*get_next_line(int fd);
 char	*ft_copy_line(char *acum);
 char	*ft_update_acum(char *acum);
 char	*ft_strchr(char *s, int c);
+char	*ft_strchr_gnl(char *s, int c);
+void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_bzero(void *str, size_t n);
 
 #endif

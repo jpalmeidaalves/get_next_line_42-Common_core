@@ -20,20 +20,22 @@ char	*ft_update_acum(char *acum)
 
 	i = 0;
 	j = 0;
-	while (acum[i] && acum[i] != '\n')
-		i++;
 	if (!acum[i])
 	{
 		free(acum);
 		return (NULL);
 	}
-	new_acum = (char *)malloc((ft_strlen(acum) - i + 1) * sizeof(char));
-	if (!new_acum)
+	while (acum[i] && acum[i] != '\n')
+		i++;
+	if (ft_strlen(acum) - i == 1)
+	{
+		free(acum);
 		return (NULL);
+	}
+	new_acum = ft_calloc((ft_strlen(acum) - i), sizeof(char) + 1);
 	i++;
 	while (acum[i])
 		new_acum[j++] = acum[i++];
-	new_acum[j] = '\0';
 	free(acum);
 	return (new_acum);
 }
@@ -44,13 +46,11 @@ char	*ft_copy_line(char *acum)
 	int		i;
 
 	i = 0;
-	if (!acum[i])
+	if (!acum[i] || !acum)
 		return (NULL);
 	while (acum[i] && acum[i] != '\n')
 		i++;
-	line = (char *)malloc(sizeof(char) * (i + 2));
-	if (!line)
-		return (NULL);
+	line = ft_calloc(i, sizeof(char) + 2);
 	i = 0;
 	while (acum[i] && acum[i] != '\n')
 	{
@@ -62,11 +62,10 @@ char	*ft_copy_line(char *acum)
 		line[i] = acum[i];
 		i++;
 	}
-	line[i] = '\0';
 	return (line);
 }
 
-char	*ft_strjoin(char *acum, char *buf)
+char	*ft_strjoin_gnl(char *acum, char *buf)
 {
 	char	*result;
 	size_t	i;
@@ -99,11 +98,14 @@ char	*ft_read_n_acum(int fd, char *acumulator)
 	char	*buf;
 	int		readed;
 
-	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
-		return (NULL);
+	if (!acumulator)
+	{
+		acumulator = malloc(1);
+		acumulator[0] = '\0';
+	}
+	buf = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	readed = 1;
-	while (!ft_strchr(acumulator, '\n') && readed != 0)
+	while (!ft_strchr_gnl(acumulator, '\n') && readed != 0)
 	{
 		readed = read(fd, buf, BUFFER_SIZE);
 		if (readed == -1)
@@ -111,8 +113,8 @@ char	*ft_read_n_acum(int fd, char *acumulator)
 			free(buf);
 			return (NULL);
 		}
-		buf[readed] = '\0';
-		acumulator = ft_strjoin(acumulator, buf);
+		if (readed > 0)
+			acumulator = ft_strjoin_gnl(acumulator, buf);
 	}
 	free(buf);
 	return (acumulator);
@@ -126,13 +128,17 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	arr_acum[fd] = ft_read_n_acum(fd, arr_acum[fd]);
-	if (!arr_acum[fd])
-		return (NULL);
 	result_line = ft_copy_line(arr_acum[fd]);
+	if (!arr_acum[fd])
+	{
+		free(result_line);
+		result_line = malloc(1);
+		result_line[0] = '\0';
+ 	}
 	arr_acum[fd] = ft_update_acum(arr_acum[fd]);
 	return (result_line);
 }
-/*
+
 #include <stdio.h>
 int	main(void)
 {
@@ -159,4 +165,4 @@ int	main(void)
 
 	
 	return (0);
-}*/
+}
