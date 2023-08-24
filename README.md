@@ -3,12 +3,16 @@
 
 ## The rules
 * Repeated calls to your get_next_line() function should let you read the text file pointed to by the file descriptor, one line at a time
-* The returned line should include the terminating \n character (except if the end of file was reached)
+* The returned line should include the terminating \n character (except if the end of the file was reached)
 * Forbidden:
     - lseek() is forbidden
     - Global variables are forbidden
 
 ### Bonus part:
+* Manage multiple file descriptors at the same time
+* If you can read from the file descriptors 3, 4 and 5, you should be
+able to read from a different fd per call without losing the reading thread of each
+file descriptor or returning a line from another fd.
 
 ## Learning Experience
 
@@ -24,4 +28,4 @@
 3. To execute:
     * ./a.out
     
-PS: The repo include 2 files in order to test the program but you can use your own files if you want
+PS: The repo includes 2 files in order to test the program but you can use your own files if you want
